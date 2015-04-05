@@ -19,10 +19,11 @@ public class LearnTable extends JFrame
      */
     private static final long serialVersionUID = 1L;
 
-    Object[] titleRow =
+    String[] titleRow =
     {
             "Name", "ID", "Age", "GPA", "Gender"
     };
+
     Object[][] tableData;
     int row;
     int col;
@@ -44,6 +45,10 @@ public class LearnTable extends JFrame
         setLayout(new FlowLayout());
 
         BtnByName = new JButton("By Name");
+        BtnByAge = new JButton("By Age");
+        BtnByGPA = new JButton("By GPA");
+        BtnByID = new JButton("By ID");
+
         BtnByName.addActionListener(new ActionListener()
         {
             @Override
@@ -54,51 +59,52 @@ public class LearnTable extends JFrame
                 table.repaint();
             }
         });
-        add(BtnByName);
 
-        BtnByAge = new JButton("By Age");
         BtnByAge.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                Arrays.sort(studentArr, Student.byAge);
+                Arrays.sort(studentArr, Student.getAgeComparator());
                 fillTable();
                 table.repaint();
             }
         });
-        add(BtnByAge);
 
-        BtnByGPA = new JButton("By GPA");
         BtnByGPA.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                Arrays.sort(studentArr, Student.byGpa);
+                Arrays.sort(studentArr, Student.getGpaComparator());
                 fillTable();
                 table.repaint();
             }
         });
-        add(BtnByGPA);
 
-        BtnByID = new JButton("By ID");
         BtnByID.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                Arrays.sort(studentArr, Student.byID);
+                Arrays.sort(studentArr, Student.getIDComparator());
                 fillTable();
                 table.repaint();
             }
         });
+
+
+        add(BtnByName);
+        add(BtnByAge);
+        add(BtnByGPA);
         add(BtnByID);
 
-        setVisible(true);
+
         pack();
         setResizable(false);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     private void generateTable()
@@ -111,8 +117,10 @@ public class LearnTable extends JFrame
         {
                 "Alice", "Brith", "Christina", "Disney", "Emma", "Folwer", "Gayie", "Hush", "Ivan", "Jessy", "Kate"
         };
+
         int num = boyName.length + girlName.length; // number of rows
         studentArr = new Student[num];
+
         for (int i = 0; i < boyName.length; i++)
         {
             int age = (int) (Math.random() * 60);
@@ -122,14 +130,17 @@ public class LearnTable extends JFrame
             long studentID = (int) (Math.random() * 900);
             studentArr[i] = new Student(age, gpa, name, studentID, 'M');
         }
+
         for (int i = boyName.length; i < num; i++)
         {
             int age = (int) (Math.random() * 60);
             double gpa = Math.random() * 4.00;
+
             String name = girlName[i - boyName.length];
             long studentID = (int) (Math.random() * 900);
             studentArr[i] = new Student(age, gpa, name, studentID, 'F');
         }
+
         row = num;
         col = titleRow.length;
         tableData = new Object[row][col];
